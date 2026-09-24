@@ -4,7 +4,21 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const Core = require('../src/core.js');
 const Facility = require('../src/facility.js');
+const Radar = require('../src/radar-realism.js');
 Facility.install(Core);
+
+const north = Radar.bearingRangeFromPercent(50, 7);
+assert.ok(north.bearing < 0.001 || north.bearing > 359.999, 'north return should read bearing 000');
+assert.ok(Math.abs(north.rangeNm - Radar.MAX_RANGE_NM) < 0.01, 'scope edge should equal configured radar range');
+assert.ok(Math.abs(Radar.bearingRangeFromPercent(93, 50).bearing - 90) < 0.01, 'east return should read bearing 090');
+assert.ok(Math.abs(Radar.bearingRangeFromPercent(50, 93).bearing - 180) < 0.01, 'south return should read bearing 180');
+assert.ok(Math.abs(Radar.bearingRangeFromPercent(7, 50).bearing - 270) < 0.01, 'west return should read bearing 270');
+assert.ok(Radar.projectToScope(100, 100).radius <= Radar.SCOPE_RADIUS + 0.001, 'rectangular positions should project inside the circular PPI scope');
+assert.equal(Radar.classifyReturnState(1, false, false), 'raw');
+assert.equal(Radar.classifyReturnState(2, false, false), 'track');
+assert.equal(Radar.classifyReturnState(3, false, false), 'confirmed');
+assert.equal(Radar.classifyReturnState(3, true, true), 'coast');
+assert.equal(Radar.angularDistance(359, 1), 2, 'sweep math should wrap cleanly across north');
 
 const state = Core.createInitialState(12345);
 assert.equal(state.version, '0.0.4');
@@ -109,4 +123,4 @@ assert.ok(Number.isFinite(restored.afterAction.facilityIntegrity));
 assert.ok(Number.isFinite(restored.afterAction.facilityReserve));
 assert.equal(Core.investigate(restored, restored.contacts[0]?.id).ok, false, 'actions should stop after shift completion');
 
-console.log('Blacksite Command v0.0.4 facility smoke: PASS');
+console.log('Blacksite Command v0.0.4.1 radar realism smoke: PASS');

@@ -4,14 +4,21 @@ Blacksite Command is a dependency-free browser command-station game built around
 
 **Detect → Correlate → Investigate → Respond → Contain → Report**
 
-## Current playable baseline — v0.0.4.1
+## Current playable baseline — v0.0.4.2
 
 - circular PPI-style primary radar scope with an 80 NM display range
-- rotating sweep arm with phosphor-style contact refresh and persistence fade
+- rotating sweep arm with a stronger trailing bloom and phosphor persistence
+- brief hit flares when the sweep crosses a tracked return
 - 20 / 40 / 60 / 80 NM range rings plus 30-degree bearing marks
-- projected bearing/range readouts and short track-history trails for live contacts
+- bezel labels that illuminate as the sweep passes them
+- projected bearing/range readouts plus heading readouts for moving tracks
+- short track-history trails and visible heading/velocity vectors
+- one-shot acquisition pulse treatment for newly observed contacts
 - distinct RAW / TRACK / CONFIRMED / COAST radar return presentation states
-- radar clutter that reacts to sector weather and RADAR ARRAY condition
+- restrained priority brackets/pulse on confirmed or high-priority tracks
+- stronger coasting trails and projected ghost positions when the array is impaired
+- weather/facility-driven ghost returns and noisy interference arcs
+- subtle scope-glass, scanline, reflection, and vignette treatment
 - live sector contacts backed by RADAR, SIGINT, SATELLITE, and GROUND sources
 - sector-specific sensor coverage, weather effects, outages, and timed satellite passes
 - cross-sensor correlation where independent sources directly improve confidence
@@ -28,26 +35,37 @@ Blacksite Command is a dependency-free browser command-station game built around
 - local persistent case archive that survives reloads when browser storage is available
 - five-minute shift clock, scoring, accuracy, after-action grade, and facility summary
 - keyboard-accessible controls and responsive narrow-screen layout
-- dependency-free Node smoke coverage for radar helpers, runtime, sensor, facility, incident, and archive transitions
+- dependency-free Node smoke coverage for radar helpers, visual-effect helpers, runtime, sensor, facility, incident, and archive transitions
 
-## Radar Realism Pass
+## Radar Realism + Visual Effects
 
-The primary display is now presented as a traditional plan-position-indicator style radar instrument instead of a rectangular tactical map.
+The primary display is presented as a traditional plan-position-indicator style radar instrument rather than a rectangular tactical map.
 
-The display includes:
+The realism layer provides:
 
-- a circular scope and center-origin station marker
-- a rotating sweep with a roughly four-second rotation period
-- phosphor-style return brightening when the sweep crosses a track, followed by persistence fade
-- range rings labeled in nautical miles
-- bearing marks around the bezel and live sweep-angle readout
-- per-track bearing and range readouts such as `TRK 247° 31.4 NM`
-- short track-history tails that show recent movement
+- circular scope and center-origin station marker
+- roughly four-second rotating sweep
+- phosphor-style return brightening and persistence fade
+- nautical-mile range rings and bearing marks
+- per-track bearing/range readouts
 - RAW, TRACK, CONFIRMED, and COAST visual states
-- subtle clutter that increases with rain/storm conditions
-- visible scope degradation when the Facility Command RADAR ARRAY is degraded or offline
+- weather clutter and visible RADAR ARRAY degradation
 
-The radar realism layer is presentation-only. Existing contact movement, sensor correlation, incident promotion, scoring, response logic, Facility Command, and archive behavior remain unchanged.
+The v0.0.4.2 visual-effects layer adds extra presentation without changing game logic:
+
+- broader sweep bloom behind the primary sweep line
+- short hit flares when returns are refreshed
+- heading/velocity vectors derived from recent display history
+- single acquisition pulse rings on newly observed contacts
+- priority brackets on confirmed/high-priority tracks
+- stronger ghost/coasting projections during degraded or offline radar operation
+- ambiguous ghost returns and interference arcs that increase with clutter and facility impairment
+- subtle scanline/glass/vignette treatment
+- sweep-lit bezel bearings
+
+These effects are deliberately subdued and instrument-like rather than neon sci-fi. Reduced-motion preferences suppress the animated decorative effects.
+
+The radar layers are presentation-only. Existing contact movement, sensor correlation, incident promotion, scoring, response logic, Facility Command, and archive behavior remain unchanged.
 
 ## Facility Command
 
@@ -88,11 +106,11 @@ Open `index.html` directly in a browser. No build step or server is required.
 npm run smoke
 ```
 
-The smoke test covers radar projection/bearing/range helpers, sweep-angle wraparound, radar return-state classification, contact acquisition, multi-source correlation, Facility Command initialization, radar-array failure and repair, power reserve/load shedding, facility-gated investigation, facility events, incident progression, response resolution, case-file sensor provenance, archive persistence, and shift finalization.
+The smoke command runs the existing gameplay/facility/radar-realism suite and a focused v0.0.4.2 visual-effects helper suite covering heading calculation, bounded velocity-vector sizing, clutter/impairment-driven ghost-return density, and sweep-angle wraparound.
 
 ## Persistence
 
-Only resolved fictional case-file data is stored in browser `localStorage` under `blacksite-command.case-files.v1`. Facility Command state resets with each new shift. Radar presentation history is display-only and resets when the page reloads. No network request or external action is performed. If storage is blocked or unavailable, the game continues with a session-only archive.
+Only resolved fictional case-file data is stored in browser `localStorage` under `blacksite-command.case-files.v1`. Facility Command state resets with each new shift. Radar presentation history and visual effects are display-only and reset when the page reloads. No network request or external action is performed. If storage is blocked or unavailable, the game continues with a session-only archive.
 
 ## Project direction
 

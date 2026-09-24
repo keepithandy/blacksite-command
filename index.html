@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="facility.css">
   <link rel="stylesheet" href="radar-realism.css">
+  <link rel="stylesheet" href="radar-effects.css">
 </head>
 <body>
   <header class="topbar">
@@ -46,9 +47,9 @@
       <div id="radar" class="radar" aria-label="Circular PPI radar contact scope"></div>
       <div class="legend" aria-label="Radar return legend">
         <span>RAW RETURN</span>
-        <span>TRACK</span>
-        <span>CONFIRMED</span>
-        <span>COAST = ARRAY DEGRADED/OFFLINE</span>
+        <span>TRACK + VECTOR</span>
+        <span>CONFIRMED / PRIORITY</span>
+        <span>COAST / GHOST = ARRAY IMPAIRED</span>
       </div>
     </section>
 
@@ -155,8 +156,8 @@
   </main>
 
   <footer>
-    <span>Blacksite Command v0.0.4.1</span>
-    <span>Fictional command simulation // PPI radar // facility command // sensor network // local case archive // no external actions</span>
+    <span>Blacksite Command v0.0.4.2</span>
+    <span>Fictional command simulation // PPI radar effects // facility command // sensor network // local case archive // no external actions</span>
   </footer>
 
   <script src="src/core.js"></script>

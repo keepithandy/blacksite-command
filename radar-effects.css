@@ -1,0 +1,227 @@
+/* v0.0.4.2 radar visual effects layer */
+.radar-sweep-bloom {
+  position: absolute;
+  inset: -1px;
+  z-index: 3;
+  border-radius: 50%;
+  transform: rotate(var(--sweep-angle));
+  pointer-events: none;
+  background: conic-gradient(
+    from -34deg at 50% 50%,
+    transparent 0deg 318deg,
+    rgba(112, 194, 108, .015) 326deg,
+    rgba(126, 212, 119, .055) 340deg,
+    rgba(146, 232, 137, .13) 351deg,
+    rgba(194, 255, 182, .24) 357deg,
+    transparent 360deg
+  );
+  filter: blur(.35px) drop-shadow(0 0 9px rgba(151, 237, 143, .18));
+  mix-blend-mode: screen;
+}
+
+.radar-glass-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(180deg, rgba(210, 235, 207, .018) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 31% 21%, rgba(230, 255, 226, .035), transparent 26%),
+    radial-gradient(circle at center, transparent 56%, rgba(0, 0, 0, .28) 82%, rgba(0, 0, 0, .48) 100%);
+  box-shadow: inset 0 0 42px rgba(0, 0, 0, .28);
+  opacity: .9;
+}
+
+.radar-bearing-label {
+  transition: color .12s linear, text-shadow .12s linear, opacity .12s linear;
+}
+.radar-bearing-label.sweep-lit {
+  color: #c0dabb;
+  text-shadow: 0 0 6px rgba(164, 218, 156, .62);
+  opacity: 1;
+}
+
+.radar-hit-flare {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%) scale(.35);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(225, 255, 217, .72) 0 7%, rgba(165, 235, 156, .23) 28%, transparent 67%);
+}
+.contact-marker.sweep-hit .radar-hit-flare {
+  animation: radarHitFlare .22s ease-out both;
+}
+
+.radar-acquisition-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(183, 225, 174, .72);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: radarAcquire 1.35s ease-out both;
+}
+
+.radar-priority-bracket {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background:
+    linear-gradient(#d6c57b, #d6c57b) left top / 8px 1px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) left top / 1px 8px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) right top / 8px 1px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) right top / 1px 8px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) left bottom / 8px 1px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) left bottom / 1px 8px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) right bottom / 8px 1px no-repeat,
+    linear-gradient(#d6c57b, #d6c57b) right bottom / 1px 8px no-repeat;
+  filter: drop-shadow(0 0 3px rgba(206, 190, 113, .34));
+  opacity: .68;
+  animation: priorityBracketPulse 2.4s ease-in-out infinite;
+}
+.return-track .radar-priority-bracket,
+.return-confirmed .radar-priority-bracket {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.radar-track-vector {
+  position: absolute;
+  z-index: 4;
+  width: var(--vector-length, 14px);
+  height: 1px;
+  transform: translateY(-50%) rotate(var(--vector-angle, 0deg));
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, rgba(168, 205, 160, .7), rgba(168, 205, 160, .08));
+  box-shadow: 0 0 3px rgba(135, 185, 130, .2);
+  pointer-events: none;
+}
+.radar-track-vector::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  border-top: 1px solid rgba(174, 211, 167, .72);
+  border-right: 1px solid rgba(174, 211, 167, .72);
+  transform: rotate(45deg);
+}
+.radar-vector-coast {
+  opacity: .32;
+  border-top: 1px dashed rgba(148, 169, 151, .36);
+  background: none;
+  box-shadow: none;
+}
+
+.radar-history-coast {
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  border: 1px dashed rgba(137, 157, 140, .62);
+  box-shadow: 0 0 7px rgba(119, 145, 122, .24);
+  filter: blur(.15px);
+}
+.radar-coast-projection {
+  position: absolute;
+  z-index: 2;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border: 1px dashed rgba(140, 157, 143, .38);
+  background: transparent;
+  pointer-events: none;
+  animation: coastGhost 1.8s ease-in-out infinite;
+}
+
+.radar-ghost-return {
+  position: absolute;
+  z-index: 2;
+  width: 8px;
+  height: 3px;
+  transform: translate(-50%, -50%) rotate(18deg);
+  border-radius: 50%;
+  background: rgba(134, 177, 130, .26);
+  box-shadow: 0 0 8px rgba(121, 175, 118, .16);
+  filter: blur(.65px);
+  opacity: .24;
+  pointer-events: none;
+  animation: ghostReturnFlicker 1.7s steps(2, end) infinite;
+  animation-delay: var(--ghost-delay, 0s);
+}
+
+.radar-noise-arc {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: var(--arc-size, 48%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(var(--arc-angle, 0deg));
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: rgba(157, 191, 151, var(--arc-opacity, .05));
+  border-right-color: rgba(157, 191, 151, calc(var(--arc-opacity, .05) * .42));
+  filter: blur(.35px);
+  pointer-events: none;
+  opacity: .9;
+}
+
+.radar-array-degraded .radar-sweep-bloom {
+  opacity: .58;
+  filter: blur(1px) drop-shadow(0 0 8px rgba(204, 162, 88, .15));
+}
+.radar-array-degraded .radar-glass-overlay {
+  background:
+    repeating-linear-gradient(180deg, rgba(219, 192, 136, .024) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 31% 21%, rgba(230, 255, 226, .025), transparent 26%),
+    radial-gradient(circle at center, transparent 54%, rgba(48, 32, 15, .25) 82%, rgba(0, 0, 0, .52) 100%);
+}
+.radar-array-offline .radar-sweep-bloom { display: none; }
+.radar-array-offline .radar-glass-overlay { opacity: .68; }
+.radar-array-offline .radar-ghost-return { opacity: .4; }
+
+@keyframes radarHitFlare {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.25); }
+  24% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.65); }
+}
+@keyframes radarAcquire {
+  0% { opacity: .9; transform: translate(-50%, -50%) scale(.45); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(3.1); }
+}
+@keyframes priorityBracketPulse {
+  0%, 100% { opacity: .44; filter: drop-shadow(0 0 2px rgba(206, 190, 113, .2)); }
+  50% { opacity: .86; filter: drop-shadow(0 0 5px rgba(206, 190, 113, .46)); }
+}
+@keyframes coastGhost {
+  0%, 100% { opacity: .18; }
+  50% { opacity: .46; }
+}
+@keyframes ghostReturnFlicker {
+  0%, 100% { opacity: .12; transform: translate(-50%, -50%) scaleX(.8); }
+  50% { opacity: .38; transform: translate(-50%, -50%) scaleX(1.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-sweep-bloom { display: none; }
+  .radar-acquisition-ring,
+  .radar-priority-bracket,
+  .radar-coast-projection,
+  .radar-ghost-return,
+  .contact-marker.sweep-hit .radar-hit-flare { animation: none; }
+  .radar-priority-bracket { opacity: .7; }
+  .radar-ghost-return { opacity: .18; }
+}

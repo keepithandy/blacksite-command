@@ -17,6 +17,7 @@
       <span><small>SHIFT</small><strong id="shiftClock">05:00</strong></span>
       <span><small>SCORE</small><strong id="scoreValue">0</strong></span>
       <span><small>ACTIVE</small><strong id="activeCount">0</strong></span>
+      <span><small>CASES</small><strong id="archiveCount">0</strong></span>
     </div>
   </header>
 
@@ -54,7 +55,17 @@
           <div><dt>SIGNAL</dt><dd id="contactSignal">—</dd></div>
           <div><dt>CONFIDENCE</dt><dd id="contactConfidence">—</dd></div>
           <div><dt>ASSESSMENT</dt><dd id="contactStatus">—</dd></div>
+          <div><dt>INCIDENT</dt><dd id="incidentId">PENDING</dd></div>
+          <div><dt>STAGE</dt><dd id="incidentStage">Acquisition</dd></div>
         </dl>
+
+        <ol class="incident-progress" aria-label="Incident progression">
+          <li data-incident-stage="0">Acquisition</li>
+          <li data-incident-stage="1">Correlation</li>
+          <li data-incident-stage="2">Assessment</li>
+          <li data-incident-stage="3">Resolution</li>
+        </ol>
+
         <button id="investigateButton" class="primary-action" type="button">Correlate sources</button>
         <div class="response-block">
           <p class="response-label">Explicit response action</p>
@@ -78,6 +89,17 @@
       <ol id="feed" class="feed" aria-live="polite"></ol>
     </section>
 
+    <section class="panel archive-panel" aria-labelledby="archiveTitle">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">RECORDS</p>
+          <h2 id="archiveTitle">Case archive</h2>
+        </div>
+        <span id="archiveStatus" class="archive-status">LOCAL ARCHIVE READY</span>
+      </div>
+      <ol id="caseArchive" class="case-archive"></ol>
+    </section>
+
     <section id="afterActionPanel" class="panel after-action" aria-labelledby="afterActionTitle" hidden>
       <p class="eyebrow">SHIFT COMPLETE</p>
       <h2 id="afterActionTitle">After-action report</h2>
@@ -92,8 +114,8 @@
   </main>
 
   <footer>
-    <span>Blacksite Command v0.0.1</span>
-    <span>Fictional command simulation // no external actions</span>
+    <span>Blacksite Command v0.0.2</span>
+    <span>Fictional command simulation // local case archive // no external actions</span>
   </footer>
 
   <script src="src/core.js"></script>

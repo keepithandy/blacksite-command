@@ -17,6 +17,7 @@
       <span><small>SHIFT</small><strong id="shiftClock">05:00</strong></span>
       <span><small>SCORE</small><strong id="scoreValue">0</strong></span>
       <span><small>ACTIVE</small><strong id="activeCount">0</strong></span>
+      <span><small>SENSORS</small><strong id="sensorOnlineCount">0</strong></span>
       <span><small>CASES</small><strong id="archiveCount">0</strong></span>
     </div>
   </header>
@@ -30,6 +31,15 @@
         </div>
         <span class="live-pill">SIMULATION LIVE</span>
       </div>
+
+      <div class="sensor-filters" aria-label="Filter contacts by sensor source">
+        <button type="button" data-sensor-filter="ALL" aria-pressed="true">ALL</button>
+        <button type="button" data-sensor-filter="RADAR" aria-pressed="false">RADAR</button>
+        <button type="button" data-sensor-filter="SIGINT" aria-pressed="false">SIGINT</button>
+        <button type="button" data-sensor-filter="SATELLITE" aria-pressed="false">SAT</button>
+        <button type="button" data-sensor-filter="GROUND" aria-pressed="false">GROUND</button>
+      </div>
+
       <div id="radar" class="radar" aria-label="Simulated contact map"></div>
       <div class="legend" aria-label="Contact legend">
         <span><i class="dot dot-low"></i>Low</span>
@@ -53,6 +63,8 @@
           <div><dt>CALLSIGN</dt><dd id="contactCallsign">—</dd></div>
           <div><dt>SECTOR</dt><dd id="contactSector">—</dd></div>
           <div><dt>SIGNAL</dt><dd id="contactSignal">—</dd></div>
+          <div><dt>SOURCES</dt><dd id="contactSources">—</dd></div>
+          <div><dt>CORRELATION</dt><dd id="contactCorrelation">—</dd></div>
           <div><dt>CONFIDENCE</dt><dd id="contactConfidence">—</dd></div>
           <div><dt>ASSESSMENT</dt><dd id="contactStatus">—</dd></div>
           <div><dt>INCIDENT</dt><dd id="incidentId">PENDING</dd></div>
@@ -66,7 +78,7 @@
           <li data-incident-stage="3">Resolution</li>
         </ol>
 
-        <button id="investigateButton" class="primary-action" type="button">Correlate sources</button>
+        <button id="investigateButton" class="primary-action" type="button">Correlate sensor sources</button>
         <div class="response-block">
           <p class="response-label">Explicit response action</p>
           <div class="response-grid">
@@ -74,7 +86,7 @@
             <button type="button" data-response="shadow">Shadow</button>
             <button type="button" data-response="contain">Contain</button>
           </div>
-          <p class="hint">Responses are fictional simulation choices. Confidence must reach 52% before dispatch.</p>
+          <p class="hint">Responses require 52% confidence and at least two independent sensor sources.</p>
         </div>
       </div>
     </section>
@@ -87,6 +99,17 @@
         </div>
       </div>
       <ol id="feed" class="feed" aria-live="polite"></ol>
+    </section>
+
+    <section class="panel sensor-panel" aria-labelledby="sensorTitle">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">SENSOR NETWORK</p>
+          <h2 id="sensorTitle">Sector coverage</h2>
+        </div>
+        <span id="satelliteStatus" class="satellite-status">ORBITAL LINK</span>
+      </div>
+      <div id="sensorGrid" class="sensor-grid"></div>
     </section>
 
     <section class="panel archive-panel" aria-labelledby="archiveTitle">
@@ -114,8 +137,8 @@
   </main>
 
   <footer>
-    <span>Blacksite Command v0.0.2</span>
-    <span>Fictional command simulation // local case archive // no external actions</span>
+    <span>Blacksite Command v0.0.3</span>
+    <span>Fictional command simulation // sensor network // local case archive // no external actions</span>
   </footer>
 
   <script src="src/core.js"></script>

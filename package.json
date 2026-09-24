@@ -1,6 +1,6 @@
 {
   "name": "blacksite-command",
-  "version": "0.0.4",
+  "version": "0.0.4.1",
   "private": true,
   "scripts": {
     "smoke": "node scripts/smoke.mjs"

@@ -7,6 +7,7 @@
   <title>Blacksite Command</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="facility.css">
+  <link rel="stylesheet" href="radar-realism.css">
 </head>
 <body>
   <header class="topbar">
@@ -28,10 +29,10 @@
     <section class="panel radar-panel" aria-labelledby="radarTitle">
       <div class="panel-heading">
         <div>
-          <p class="eyebrow">SECTOR MAP</p>
-          <h2 id="radarTitle">Contact picture</h2>
+          <p class="eyebrow">PRIMARY RADAR</p>
+          <h2 id="radarTitle">PPI contact scope</h2>
         </div>
-        <span class="live-pill">SIMULATION LIVE</span>
+        <span class="live-pill">80 NM // ACTIVE</span>
       </div>
 
       <div class="sensor-filters" aria-label="Filter contacts by sensor source">
@@ -42,12 +43,12 @@
         <button type="button" data-sensor-filter="GROUND" aria-pressed="false">GROUND</button>
       </div>
 
-      <div id="radar" class="radar" aria-label="Simulated contact map"></div>
-      <div class="legend" aria-label="Contact legend">
-        <span><i class="dot dot-low"></i>Low</span>
-        <span><i class="dot dot-medium"></i>Medium</span>
-        <span><i class="dot dot-high"></i>High</span>
-        <span>Contact risk appears only after sufficient correlation.</span>
+      <div id="radar" class="radar" aria-label="Circular PPI radar contact scope"></div>
+      <div class="legend" aria-label="Radar return legend">
+        <span>RAW RETURN</span>
+        <span>TRACK</span>
+        <span>CONFIRMED</span>
+        <span>COAST = ARRAY DEGRADED/OFFLINE</span>
       </div>
     </section>
 
@@ -154,13 +155,14 @@
   </main>
 
   <footer>
-    <span>Blacksite Command v0.0.4</span>
-    <span>Fictional command simulation // facility command // sensor network // local case archive // no external actions</span>
+    <span>Blacksite Command v0.0.4.1</span>
+    <span>Fictional command simulation // PPI radar // facility command // sensor network // local case archive // no external actions</span>
   </footer>
 
   <script src="src/core.js"></script>
   <script src="src/facility.js"></script>
   <script src="src/app.js"></script>
   <script src="src/facility-ui.js"></script>
+  <script src="src/radar-realism.js"></script>
 </body>
 </html>

@@ -4,10 +4,15 @@ Blacksite Command is a dependency-free browser command-station game built around
 
 **Detect → Correlate → Investigate → Respond → Contain → Report**
 
-## Current playable baseline — v0.0.4
+## Current playable baseline — v0.0.4.1
 
-- live sector map with moving simulated contacts
-- four sensor-source classes: RADAR, SIGINT, SATELLITE, and GROUND
+- circular PPI-style primary radar scope with an 80 NM display range
+- rotating sweep arm with phosphor-style contact refresh and persistence fade
+- 20 / 40 / 60 / 80 NM range rings plus 30-degree bearing marks
+- projected bearing/range readouts and short track-history trails for live contacts
+- distinct RAW / TRACK / CONFIRMED / COAST radar return presentation states
+- radar clutter that reacts to sector weather and RADAR ARRAY condition
+- live sector contacts backed by RADAR, SIGINT, SATELLITE, and GROUND sources
 - sector-specific sensor coverage, weather effects, outages, and timed satellite passes
 - cross-sensor correlation where independent sources directly improve confidence
 - two-source minimum for response authorization and incident promotion
@@ -23,7 +28,26 @@ Blacksite Command is a dependency-free browser command-station game built around
 - local persistent case archive that survives reloads when browser storage is available
 - five-minute shift clock, scoring, accuracy, after-action grade, and facility summary
 - keyboard-accessible controls and responsive narrow-screen layout
-- dependency-free Node smoke coverage for runtime, sensor, facility, incident, and archive transitions
+- dependency-free Node smoke coverage for radar helpers, runtime, sensor, facility, incident, and archive transitions
+
+## Radar Realism Pass
+
+The primary display is now presented as a traditional plan-position-indicator style radar instrument instead of a rectangular tactical map.
+
+The display includes:
+
+- a circular scope and center-origin station marker
+- a rotating sweep with a roughly four-second rotation period
+- phosphor-style return brightening when the sweep crosses a track, followed by persistence fade
+- range rings labeled in nautical miles
+- bearing marks around the bezel and live sweep-angle readout
+- per-track bearing and range readouts such as `TRK 247° 31.4 NM`
+- short track-history tails that show recent movement
+- RAW, TRACK, CONFIRMED, and COAST visual states
+- subtle clutter that increases with rain/storm conditions
+- visible scope degradation when the Facility Command RADAR ARRAY is degraded or offline
+
+The radar realism layer is presentation-only. Existing contact movement, sensor correlation, incident promotion, scoring, response logic, Facility Command, and archive behavior remain unchanged.
 
 ## Facility Command
 
@@ -64,11 +88,11 @@ Open `index.html` directly in a browser. No build step or server is required.
 npm run smoke
 ```
 
-The smoke test covers contact acquisition, multi-source correlation, Facility Command initialization, radar-array failure and repair, power reserve/load shedding, facility-gated investigation, facility events, incident progression, response resolution, case-file sensor provenance, archive persistence, and shift finalization.
+The smoke test covers radar projection/bearing/range helpers, sweep-angle wraparound, radar return-state classification, contact acquisition, multi-source correlation, Facility Command initialization, radar-array failure and repair, power reserve/load shedding, facility-gated investigation, facility events, incident progression, response resolution, case-file sensor provenance, archive persistence, and shift finalization.
 
 ## Persistence
 
-Only resolved fictional case-file data is stored in browser `localStorage` under `blacksite-command.case-files.v1`. Facility Command state resets with each new shift. No network request or external action is performed. If storage is blocked or unavailable, the game continues with a session-only archive.
+Only resolved fictional case-file data is stored in browser `localStorage` under `blacksite-command.case-files.v1`. Facility Command state resets with each new shift. Radar presentation history is display-only and resets when the page reloads. No network request or external action is performed. If storage is blocked or unavailable, the game continues with a session-only archive.
 
 ## Project direction
 

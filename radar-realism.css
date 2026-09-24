@@ -1,0 +1,275 @@
+.radar-panel {
+  overflow: hidden;
+}
+
+.radar-stage {
+  position: relative;
+  width: min(100%, 760px);
+  aspect-ratio: 1;
+  margin: 1.15rem auto 1rem;
+  padding: clamp(1.6rem, 4vw, 2.5rem);
+  background: radial-gradient(circle, rgba(36, 60, 39, .16), rgba(4, 8, 5, .94) 66%);
+}
+
+.radar {
+  --sweep-angle: 0deg;
+  --clutter-opacity: .08;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(139, 190, 132, .58);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 42px rgba(83, 156, 84, .08),
+    0 0 0 8px #090d0a,
+    0 0 0 9px #2b392d,
+    0 0 42px rgba(0, 0, 0, .5);
+  background:
+    repeating-conic-gradient(from 0deg, rgba(126, 174, 124, .10) 0deg .35deg, transparent .35deg 30deg),
+    repeating-radial-gradient(circle at center, transparent 0 11.7%, rgba(131, 183, 127, .14) 11.9% 12.1%, transparent 12.3% 24.2%),
+    linear-gradient(rgba(120, 160, 126, .075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 160, 126, .075) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(17, 39, 20, .72), #071008 76%);
+  background-size: auto, auto, 12.5% 12.5%, 12.5% 12.5%, auto;
+  clip-path: circle(50% at 50% 50%);
+  isolation: isolate;
+}
+
+.radar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 36% 31%, rgba(126, 182, 117, var(--clutter-opacity)) 0 1px, transparent 2px),
+    radial-gradient(circle at 65% 58%, rgba(126, 182, 117, calc(var(--clutter-opacity) * .8)) 0 1px, transparent 2px),
+    radial-gradient(circle at 55% 74%, rgba(126, 182, 117, calc(var(--clutter-opacity) * .7)) 0 1.2px, transparent 2.2px),
+    repeating-conic-gradient(from 3deg, rgba(117, 178, 112, calc(var(--clutter-opacity) * .12)) 0deg 1deg, transparent 1deg 6deg);
+  mix-blend-mode: screen;
+  opacity: .9;
+}
+
+.radar::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 3;
+  border: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: rotate(var(--sweep-angle));
+  background: conic-gradient(from -10deg at 50% 50%, transparent 0deg 337deg, rgba(122, 215, 115, .03) 343deg, rgba(151, 237, 143, .2) 356deg, rgba(192, 255, 179, .68) 359deg, transparent 360deg);
+  filter: drop-shadow(0 0 5px rgba(151, 237, 143, .22));
+}
+
+.radar-bezel {
+  position: absolute;
+  inset: clamp(.9rem, 2.2vw, 1.45rem);
+  pointer-events: none;
+}
+
+.radar-bearing-label {
+  --bearing: 0deg;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2.2rem;
+  margin-left: -1.1rem;
+  color: #718a73;
+  font-size: .56rem;
+  text-align: center;
+  transform: rotate(var(--bearing)) translateY(calc(-50% - min(44vw, 338px))) rotate(calc(-1 * var(--bearing)));
+  transform-origin: 50% 0;
+}
+
+.radar-range-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+.radar-range-labels span {
+  --ring-radius: 20%;
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--ring-radius));
+  transform: translate(-50%, -50%);
+  padding: 0 .22rem;
+  background: #09100b;
+  color: #607663;
+  font-size: .48rem;
+  letter-spacing: .04em;
+}
+
+.radar-origin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  z-index: 7;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border: 1px solid #aec5a9;
+  background: #111a12;
+  box-shadow: 0 0 8px rgba(158, 206, 151, .32);
+  pointer-events: none;
+}
+
+.radar-origin::before,
+.radar-origin::after {
+  content: '';
+  position: absolute;
+  background: rgba(142, 180, 137, .35);
+}
+.radar-origin::before { width: 1px; height: 30px; left: 4px; top: -11px; }
+.radar-origin::after { width: 30px; height: 1px; top: 4px; left: -11px; }
+
+.radar-scope-status {
+  position: absolute;
+  left: 50%;
+  bottom: .1rem;
+  transform: translateX(-50%);
+  display: flex;
+  gap: .7rem;
+  width: max-content;
+  max-width: 92%;
+  color: #758779;
+  font-size: .55rem;
+  letter-spacing: .06em;
+  pointer-events: none;
+}
+.radar-scope-status span { white-space: nowrap; }
+
+.contact-marker {
+  --return-opacity: .35;
+  min-width: 0;
+  min-height: 0;
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  border: 1px solid currentColor;
+  background: currentColor;
+  color: #9bc596;
+  opacity: var(--return-opacity);
+  box-shadow: 0 0 9px currentColor;
+  transition: opacity .08s linear, box-shadow .12s ease, border-color .12s ease;
+}
+
+.contact-marker > span:first-child,
+.contact-marker > small { display: none; }
+.contact-marker:hover,
+.contact-marker.selected {
+  width: 15px;
+  height: 15px;
+  border-color: #d8efd3;
+  box-shadow: 0 0 0 3px rgba(141, 187, 131, .13), 0 0 14px currentColor;
+}
+.contact-marker.sweep-hit {
+  opacity: 1;
+  box-shadow: 0 0 16px currentColor, 0 0 5px #e6ffdf;
+}
+
+.contact-marker.return-raw {
+  border-radius: 50%;
+  color: #88ad86;
+}
+.contact-marker.return-track {
+  background: transparent;
+  color: #a5c99f;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.contact-marker.return-confirmed {
+  width: 13px;
+  height: 13px;
+  background: transparent;
+  color: #d0c07c;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-width: 2px;
+}
+.contact-marker.return-coast {
+  background: transparent;
+  color: #819487;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.radar-track-readout {
+  position: absolute;
+  left: 16px;
+  top: -5px;
+  width: max-content;
+  color: #94aa95;
+  font-size: .5rem;
+  line-height: 1.2;
+  letter-spacing: .04em;
+  transform: none;
+  text-shadow: 0 1px 2px #020403;
+  opacity: .68;
+  pointer-events: none;
+}
+.contact-marker.return-track .radar-track-readout,
+.contact-marker.return-confirmed .radar-track-readout { transform: rotate(-45deg); transform-origin: left center; }
+.contact-marker.selected .radar-track-readout,
+.contact-marker:hover .radar-track-readout { color: #d8e6d6; opacity: 1; }
+
+.radar-history-point {
+  position: absolute;
+  z-index: 2;
+  width: 4px;
+  height: 4px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #6f956f;
+  box-shadow: 0 0 5px rgba(113, 160, 111, .45);
+  pointer-events: none;
+}
+
+.radar-array-degraded::after {
+  filter: blur(.5px) drop-shadow(0 0 6px rgba(151, 237, 143, .18));
+  opacity: .7;
+}
+.radar-array-degraded {
+  box-shadow: inset 0 0 58px rgba(168, 132, 74, .08), 0 0 0 8px #090d0a, 0 0 0 9px #5a4b31;
+}
+.radar-array-offline::after { display: none; }
+.radar-array-offline {
+  filter: saturate(.35) brightness(.68);
+  box-shadow: inset 0 0 65px rgba(142, 77, 68, .11), 0 0 0 8px #090d0a, 0 0 0 9px #4c3431;
+}
+.radar-array-offline::before { opacity: .32; }
+
+.radar-stage + .legend {
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .radar-stage { width: min(100%, 640px); }
+  .radar-bearing-label { transform: rotate(var(--bearing)) translateY(calc(-50% - min(43vw, 286px))) rotate(calc(-1 * var(--bearing))); }
+}
+
+@media (max-width: 620px) {
+  .radar-stage {
+    width: 100%;
+    margin: .8rem auto .5rem;
+    padding: 1.55rem;
+  }
+  .radar-bearing-label {
+    font-size: .48rem;
+    transform: rotate(var(--bearing)) translateY(calc(-50% - 39vw)) rotate(calc(-1 * var(--bearing)));
+  }
+  .radar-scope-status {
+    gap: .4rem;
+    font-size: .46rem;
+  }
+  .radar-track-readout { font-size: .44rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar::after { display: none; }
+  .contact-marker { transition: none; }
+}
